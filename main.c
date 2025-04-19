@@ -16,6 +16,7 @@
 #include "init.h"            // Funções de inicialização do hardware
 #include "interrupt.h"       // Funções de manipulação de interrupções
 #include "pio.h"             // Funções PIO para matriz 5x5
+#include "quadrado.h"
 
 
 int main()
@@ -23,7 +24,7 @@ int main()
     init();
 
     while (true) {
-        set_one_led(20, 0, 0); // Liga o LED na posição 0 com a cor vermelha
+        movimentoJoystick();
         sleep_ms(50);
     }
 }

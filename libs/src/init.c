@@ -9,6 +9,7 @@
 // Headers do projeto
 #include "defines.h"
 #include "display.h"
+#include "pio.h"
 
 // Inicializa o joystick (configura o ADC e o pino do joystick)
 void joystick_init() {
