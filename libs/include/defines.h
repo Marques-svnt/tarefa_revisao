@@ -7,9 +7,10 @@
 #define I2C_SCL 15
 #define endereco 0x3C
 
-// Definir os pinos dos leds RGB e o Botão A e B
+// Definir os pinos dos leds RGB e o Botão A, B e Joystick
 #define BUTTON_A 5
 #define BUTTON_B 6
+#define BUTTON_J 22
 #define VERDE 11
 #define AZUL 12
 #define VERMELHO 13

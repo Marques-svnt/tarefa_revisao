@@ -11,13 +11,7 @@
 #include "display.h"
 #include "pio.h"
 
-// Inicializa o joystick (configura o ADC e o pino do joystick)
-void joystick_init() {
-    adc_init(); // Inicializa o ADC
-    adc_gpio_init(JOYSTICK_Y_PIN); // Inicializa o pino Y do joystick
-}
-
-// Configura os botões A, B e os LEDs
+// Configura os botões A, B e Push botton do Joystick e os LEDs
 void led_button_init() {
     
     // Configuração dos botões
@@ -27,7 +21,11 @@ void led_button_init() {
 
     gpio_init(BUTTON_B);
     gpio_set_dir(BUTTON_B, GPIO_IN); 
-    gpio_pull_up(BUTTON_B); 
+    gpio_pull_up(BUTTON_B);
+
+    gpio_init(BUTTON_A);
+    gpio_set_dir(BUTTON_A, GPIO_IN); 
+    gpio_pull_up(BUTTON_A);
 
     // Configuração dos LEDs
     gpio_init(VERDE);
@@ -41,11 +39,11 @@ void led_button_init() {
 void init() {
     stdio_init_all(); // Inicializa a comunicação serial
 
+    adc_init(); // Inicializa o ADC
+
     initI2C(); // Inicializa o barramento I2C
 
     uart_init(uart0, 115200); // Inicializa o UART com baud rate de 115200
-
-    joystick_init(); // Inicializa o joystick
 
     led_button_init(); // Inicializa os botões e LEDs
 

@@ -56,7 +56,7 @@ void movimentoJoystick()
             coord_y = max_y;
         }
 
-        // Exibir as coordenadas
+        // Acionar o quadrado na tela
         displayQuadrado(coord_x, coord_y);
 
         // Delay de estabilização

@@ -16,15 +16,35 @@
 #include "init.h"            // Funções de inicialização do hardware
 #include "interrupt.h"       // Funções de manipulação de interrupções
 #include "pio.h"             // Funções PIO para matriz 5x5
-#include "quadrado.h"
+#include "quadrado.h"        // Movimentação do quadrado no display
+#include "simulation.h"      // Simulação dos dados do GLP
 
+volatile int startSimulation = 0;
 
 int main()
 {
     init();
 
+    //set_one_led(20,0,0); // configurar o A e seta esquerda
+
+    gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler); // Interrupção no botão A
+
     while (true) {
         movimentoJoystick();
+
+        if(startSimulation == 1 && stdio_usb_connected()){
+            simulationGLP();
+            startSimulation = 0;
+        } else if (startSimulation == 1 && !stdio_usb_connected()){
+            limpar();
+            display("Ative o Serial", 8, 10);
+            display("Monitor", 36, 22);
+            display("e tente", 36, 34);
+            display("novamente", 28, 46);
+            sleep_ms(4000);
+            limpar();
+            startSimulation = 0;
+        }
         sleep_ms(50);
     }
 }

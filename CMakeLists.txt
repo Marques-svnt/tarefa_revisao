@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(main main.c libs/src/display.c libs/src/ssd1306.c libs/src/init.c libs/src/interrupt.c libs/src/pio.c libs/src/quadrado.c)
+add_executable(main main.c libs/src/display.c libs/src/ssd1306.c libs/src/init.c libs/src/interrupt.c libs/src/pio.c libs/src/quadrado.c libs/src/simulation.c)
 
 pico_set_program_name(main "main")
 pico_set_program_version(main "0.1")
