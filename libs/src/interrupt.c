@@ -25,7 +25,7 @@ bool debounce(volatile uint32_t *last_time, uint32_t debounce_time)
     return false;
 }
 
-// Função de interrupção com debouncing
+// Função de interrupção com debouncing que atualiza o estado da variavel global que controla quando a simulação deve começar
 void gpio_irq_handler(uint gpio, uint32_t events)
 {
     uint32_t current_time = to_us_since_boot(get_absolute_time());

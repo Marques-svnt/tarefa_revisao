@@ -13,26 +13,27 @@
 #include "init.h"
 #include "interrupt.h"
 #include "pio.h"
-#include "quadrado.h" // Movimentação do quadrado no display
+#include "quadrado.h"
 #include "buzzer.h"
 
-#define DELAY 5000
+#define DELAY 5000 // Atraso entre atualizações do relatório de estado
 
 // Variáveis globais
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
 static volatile uint32_t last_time_B = 0;
-extern uint freq_atual;
-bool vazamento = 0;
-bool trava = 0;
-bool registro = 0;
-int percentGLP = 100;
-bool exec = 1;
+extern uint freq_atual; // frequência do buzzer
+bool vazamento = 0;     // Indicação de vazamento (inicialmente desligado)
+bool trava = 0;         // Indicação de trava caso haja vazamento (inicialmente desligado)
+bool registro = 0;      // Indicação de estado do registro (inicialmente fechado)
+int percentGLP = 100;   // Percentual de gás presente no botijão (inicialmente 100)
+bool exec = 1;          // Indicação do código estar em execução ou não
 
-// Função de interrupção para manipular a troca de unidades e saída do programa
+// Função de interrupção para os botões
 void gpio_irq_handler_glp(uint gpio, uint32_t events)
 {
     uint32_t current_time = to_us_since_boot(get_absolute_time());
 
+    // Acionar evento de vazamento
     if (gpio == BUTTON_B && debounce(&last_time_A, 200000))
     {
         last_time_A = current_time;
@@ -51,6 +52,7 @@ void gpio_irq_handler_glp(uint gpio, uint32_t events)
         }
     }
 
+    // Mudar estado do registro
     else if (gpio == BUTTON_A && debounce(&last_time_B, 300000))
     {
         last_time_B = current_time;
@@ -62,18 +64,14 @@ void gpio_irq_handler_glp(uint gpio, uint32_t events)
     }
 }
 
+// Imprimir valores no serial monitor
 void relatorio()
 {
     printf("\nPorcentagem de gás presente no botijão: %d%%\n", percentGLP);
     printf("Estado do registro: %s\n", registro ? "Aberto" : "Fechado");
 }
 
-void ledRegistro()
-{
-    gpio_put(VERDE, registro);
-    gpio_put(VERMELHO, !registro);
-}
-
+// Atuador sonoro caso haja vazamento de gás
 void vazamentoBuzz()
 {
     if (vazamento)
@@ -86,8 +84,11 @@ void vazamentoBuzz()
     }
 }
 
+// Atuador visual de acordo com o estado do registro
 void matrizRegistro()
 {
+    gpio_put(VERDE, registro);
+    gpio_put(VERMELHO, !registro);
     if (registro)
     {
         set_one_led(1, 0, 20, 0);
@@ -98,7 +99,9 @@ void matrizRegistro()
     }
 }
 
-void reset(){
+// Reiniciar as condições iniciais e definir a interrupção do estado inicial para recomeçar a simulação
+void reset()
+{
     exec = 1;
     vazamento = 0;
     registro = 0;
@@ -113,13 +116,14 @@ int simulationGLP()
     gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler_glp);
     gpio_set_irq_enabled_with_callback(BUTTON_B, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler_glp);
 
-    uint32_t last_relatorio_time = to_ms_since_boot(get_absolute_time());
+    uint32_t last_relatorio_time = to_ms_since_boot(get_absolute_time()); // Criar intervalo de geração dos relatórios que não trave os comandos
 
     while (exec == 1)
     {
-        ledRegistro();
         vazamentoBuzz();
+
         movimentoJoystick();
+
         matrizRegistro();
 
         uint32_t now = to_ms_since_boot(get_absolute_time());
@@ -139,6 +143,8 @@ int simulationGLP()
         }
         sleep_ms(50);
     }
+
     reset();
+
     return 0;
 }
