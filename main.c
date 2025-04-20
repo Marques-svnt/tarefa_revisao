@@ -25,7 +25,7 @@ int main()
 {
     init();
 
-    //set_one_led(20,0,0); // configurar o A e seta esquerda
+    //set_one_led(20,0,0); // configurar o A e seta esquerda e coloridin
 
     gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler); // Interrupção no botão A
 

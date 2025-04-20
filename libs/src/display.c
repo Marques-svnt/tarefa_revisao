@@ -35,7 +35,6 @@ void display(const char *texto, int x, int y)
 {
     // Atualiza o conteúdo do display com animações
     ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
-    ssd1306_rect(&ssd, 3, 3, 123, 59, cor, !cor);
     ssd1306_draw_string(&ssd, texto, x, y);       // Desenha a string passada como argumento
     ssd1306_send_data(&ssd);                      // Atualiza o display
 }
@@ -50,7 +49,8 @@ void limpar()
 void displayQuadrado(int x, int y)
 {
     // Atualiza o conteúdo do display
-    ssd1306_fill(&ssd, false);                    // Limpa a tela
+    ssd1306_fill(&ssd, false);      
+    ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
     ssd1306_draw_string(&ssd, "~", x, y);         // Desenha o quadrado
     ssd1306_send_data(&ssd);                      // Atualiza o display
 }

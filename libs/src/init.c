@@ -10,33 +10,36 @@
 #include "defines.h"
 #include "display.h"
 #include "pio.h"
+#include "buzzer.h"
 
 // Configura os botões A, B e Push botton do Joystick e os LEDs
-void led_button_init() {
-    
+void led_button_init()
+{
+
     // Configuração dos botões
     gpio_init(BUTTON_A);
-    gpio_set_dir(BUTTON_A, GPIO_IN); 
+    gpio_set_dir(BUTTON_A, GPIO_IN);
     gpio_pull_up(BUTTON_A);
 
     gpio_init(BUTTON_B);
-    gpio_set_dir(BUTTON_B, GPIO_IN); 
+    gpio_set_dir(BUTTON_B, GPIO_IN);
     gpio_pull_up(BUTTON_B);
 
     gpio_init(BUTTON_A);
-    gpio_set_dir(BUTTON_A, GPIO_IN); 
+    gpio_set_dir(BUTTON_A, GPIO_IN);
     gpio_pull_up(BUTTON_A);
 
     // Configuração dos LEDs
     gpio_init(VERDE);
-    gpio_set_dir(VERDE, GPIO_OUT); 
+    gpio_set_dir(VERDE, GPIO_OUT);
 
     gpio_init(VERMELHO);
-    gpio_set_dir(VERMELHO, GPIO_OUT); 
+    gpio_set_dir(VERMELHO, GPIO_OUT);
 }
 
 // Função que faz todas as inicializações do projeto
-void init() {
+void init()
+{
     stdio_init_all(); // Inicializa a comunicação serial
 
     adc_init(); // Inicializa o ADC
@@ -49,4 +52,5 @@ void init() {
 
     initializePio(); // Inicializa a PIO
 
+    buzzer_init(); // Inicializa o Buzzer
 }
