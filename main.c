@@ -30,6 +30,7 @@ int main()
     while (true)
     {
         movimentoJoystick(); // Função responsável por criar o quadrado no display e controlar seu movimento
+        displayA();
 
         // Garante que a simulação só possa começar caso a placa tenha conectividade USB
         if (stdio_usb_connected())
@@ -37,6 +38,7 @@ int main()
             set_one_led(0, 0, 20, 0); // Sinalização de qual botão deve-se apertar para começar a simulação e feedback visual se tudo está conectado (verde)
             if (startSimulation == 1)
             {
+                limpar();
                 simulationGLP();
                 startSimulation = 0;
             }

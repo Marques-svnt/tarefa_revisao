@@ -6,5 +6,7 @@ void initI2C();
 void display(const char *texto, int x, int y);
 void displayQuadrado(int x, int y);
 void limpar();
+void displayGLP(const char *texto, int x, int y);
+void displayA();
 
 #endif

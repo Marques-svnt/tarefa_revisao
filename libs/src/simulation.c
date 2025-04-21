@@ -1,5 +1,6 @@
 // Bibliotecas padrão em C
 #include <stdio.h>
+#include <string.h>
 
 // Bibliotecas de hardware do Raspberry Pi Pico
 #include "hardware/adc.h"
@@ -80,6 +81,7 @@ void vazamentoBuzz()
     }
     else
     {
+        sleep_ms(50);
         buzzer_stop();
     }
 }
@@ -89,6 +91,7 @@ void matrizRegistro()
 {
     gpio_put(VERDE, registro);
     gpio_put(VERMELHO, !registro);
+
     if (registro)
     {
         set_one_led(1, 0, 20, 0);
@@ -109,6 +112,35 @@ void reset()
     percentGLP = 100;
 
     gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler); // Interrupção no botão A
+
+    limpar();
+}
+
+// Informações na parte inferior do display
+void dadosDisplay()
+{
+    if (vazamento)
+    {
+        displayGLP("()", 56, 48);
+    }
+    else
+    {
+        displayGLP("  ", 56, 48);
+    }
+
+    if (registro)
+    {
+        displayGLP("O", 108, 48);
+    }
+    else
+    {
+        displayGLP("X", 108, 48);
+    }
+
+    char valorGLP[10];
+    snprintf(valorGLP, sizeof(valorGLP), "%d%%  ", percentGLP);
+    displayGLP(valorGLP, 10, 48);
+
 }
 
 int simulationGLP()
@@ -125,6 +157,8 @@ int simulationGLP()
         movimentoJoystick();
 
         matrizRegistro();
+
+        dadosDisplay();
 
         uint32_t now = to_ms_since_boot(get_absolute_time());
         if (now - last_relatorio_time >= DELAY)

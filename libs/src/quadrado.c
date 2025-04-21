@@ -25,15 +25,15 @@ void movimentoJoystick()
 
     if (!(flick_x < 100 && flick_x > -100 && flick_y < 100 && flick_y > -100)) // Apenas ocorre o código quando o valor de flick fugir do intervalo entre -100 e 100
     {
-        int coord_x = (vry_value * 126) / 4095; // Mapeando para intervalo de 0-127
-        int coord_y = (vrx_value * 40) / 4095;  // Mapeando para intervalo de 0-63
+        int coord_x = (vry_value * 136) / 4095; // Mapeando para intervalo de 0-127
+        int coord_y = (vrx_value * 30) / 4095;  // Mapeando para intervalo de 0-63
 
         lastvry_value = vry_value;
         lastvrx_value = vrx_value;
 
         // Definir limites para coordenadas
         int min_x = 10, max_x = 112;
-        int min_y = 10, max_y = 48;
+        int min_y = 8, max_y = 32;
 
         // Inversão do eixo Y devido ao display exibir os movimentos ao contrário
         coord_y = max_y - coord_y;

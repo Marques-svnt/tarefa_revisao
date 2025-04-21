@@ -228,6 +228,10 @@ void ssd1306_draw_char(ssd1306_t *ssd, char c, uint8_t x, uint8_t y)
   {
     index = 72 * 8;  // Índice para o caractere '~' representando uma quadrado 8x8
   }
+  else if (c == '%') // Para o caractere '5'
+  {
+    index = 73 * 8;  // Índice para o caractere '5' 
+  }
   for (uint8_t i = 0; i < 8; ++i)
   {
     uint8_t line = font[index + i];
